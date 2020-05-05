@@ -1,0 +1,17 @@
+name: RunicChat
+version: ${project.version}
+main: com.runicrealms.RunicChat
+authors: [OhCreative]
+softdepend: [PlaceholderAPI]
+description: Chat Plugin for Runic Realms
+website: https://runicrealms.com/
+permissions:
+  runicchat.default:
+    children:
+      runicchat.command.example: true
+    default: true
+  runicchat.admin:
+    children:
+      runicchat.command.example: true
+      runicchat.default: true
+    default: op
