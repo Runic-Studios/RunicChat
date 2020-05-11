@@ -22,9 +22,8 @@ public class Channel extends BaseCommand {
     @CommandPermission("runicchat.channel")
     @Syntax("<channel>")
     public void execute(Player player, String[] args) {
-        String inputChannel = args[0].toLowerCase();
 
-        if(inputChannel.isEmpty()) {
+        if(args == null) {
             String channelList = "";
 
             for(ChatChannel channel : runicChatAPI.getChatChannels())
@@ -33,6 +32,8 @@ public class Channel extends BaseCommand {
             player.sendMessage(ChatColor.GRAY + "Current Channels: " + ChatColor.GREEN + channelList);
             return;
         }
+
+        String inputChannel = args[0].toLowerCase();
 
         ChatChannel channel = runicChatAPI.getChatChannels().stream().filter(ch -> ch.getName().equalsIgnoreCase(inputChannel)).findFirst().orElseGet(null);
 
