@@ -38,7 +38,7 @@ public class PlayerMessageListener implements Listener {
             event.getMessageSender().sendMessage(ChatColor.RED + "You are muted!");
             return;
         }
-        String formattedMessage = ChatColor.translateAlternateColorCodes('&', event.getChatChannel().getPrefix() + PlaceholderAPI.setPlaceholders(event.getMessageSender(), event.getChatChannel().getMessageFormat()));
+        String formattedMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(event.getMessageSender(), event.getChatChannel().getPrefix() + event.getChatChannel().getMessageFormat()));
 
         String finalMessage = formattedMessage.replace("%message%", event.getMessageSender().hasPermission("runicchat.color") ? ChatColor.translateAlternateColorCodes('&', event.getChatMessage()) : event.getChatMessage());
 
