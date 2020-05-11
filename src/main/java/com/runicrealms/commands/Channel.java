@@ -23,6 +23,17 @@ public class Channel extends BaseCommand {
     @Syntax("<channel>")
     public void execute(Player player, String[] args) {
         String inputChannel = args[0].toLowerCase();
+
+        if(inputChannel.isEmpty()) {
+            String channelList = "";
+
+            for(ChatChannel channel : runicChatAPI.getChatChannels())
+                channelList += channel.getName() + ", ";
+
+            player.sendMessage(ChatColor.GRAY + "Current Channels: " + ChatColor.GREEN + channelList);
+            return;
+        }
+
         ChatChannel channel = runicChatAPI.getChatChannels().stream().filter(ch -> ch.getName().equalsIgnoreCase(inputChannel)).findFirst().orElseGet(null);
 
         if(channel != null) {
