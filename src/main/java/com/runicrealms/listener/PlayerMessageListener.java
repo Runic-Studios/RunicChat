@@ -1,10 +1,8 @@
 package com.runicrealms.listener;
 
-import co.aikar.commands.ACFUtil;
 import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.api.event.ChatChannelMessageEvent;
-import com.runicrealms.util.JSONMessage;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +33,12 @@ public class PlayerMessageListener implements Listener {
 
     @EventHandler
     public void onChatChannelMessage(ChatChannelMessageEvent event) {
-        String formattedMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(event.getMessageSender(), event.getChatChannel().getMessageFormat()));
+        if(RunicChat.getRunicChatAPI().getMutes().contains(event.getMessageSender())) {
+            event.setCancelled(true);
+            event.getMessageSender().sendMessage(ChatColor.RED + "You are muted!");
+            return;
+        }
+        String formattedMessage = ChatColor.translateAlternateColorCodes('&', event.getChatChannel().getPrefix() + PlaceholderAPI.setPlaceholders(event.getMessageSender(), event.getChatChannel().getMessageFormat()));
 
         String finalMessage = formattedMessage.replace("%message%", event.getMessageSender().hasPermission("runicchat.color") ? ChatColor.translateAlternateColorCodes('&', event.getChatMessage()) : event.getChatMessage());
 

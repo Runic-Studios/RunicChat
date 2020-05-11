@@ -17,7 +17,7 @@ import java.util.List;
 public class Local extends ChatChannel {
     @Override
     public String getPrefix() {
-        return "&b[&4Local&b]&r ";
+        return "&8[&5Local&8]&r ";
     }
 
     @Override

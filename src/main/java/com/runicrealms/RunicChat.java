@@ -1,7 +1,12 @@
 package com.runicrealms;
 
+import ch.jalu.configme.SettingsManager;
+import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.api.RunicChatAPI;
+import com.runicrealms.channels.Global;
 import com.runicrealms.channels.Local;
+import com.runicrealms.commands.Channel;
+import com.runicrealms.commands.Message;
 import com.runicrealms.listener.PlayerMessageListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,18 +19,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RunicChat extends JavaPlugin {
 
     private static RunicChatAPI runicChatAPI;
+    private static PaperCommandManager commandManager;
 
     @Override
     public void onEnable() {
         runicChatAPI = new ChatManager();
+        commandManager = new PaperCommandManager(this);
+
+        commandManager.registerDependency(RunicChatAPI.class, runicChatAPI);
 
         // Register Chat Channels
+        runicChatAPI.registerChatChannel(new Global());
         runicChatAPI.registerChatChannel(new Local());
+
+        // Register Commands
+        commandManager.registerCommand(new Channel());
+        commandManager.registerCommand(new Message());
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
     }
 
     public static RunicChatAPI getRunicChatAPI() { return runicChatAPI; }
+    protected static PaperCommandManager getCommandManager() { return commandManager; }
 
 }
