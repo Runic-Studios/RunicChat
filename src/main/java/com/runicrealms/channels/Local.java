@@ -1,7 +1,6 @@
 package com.runicrealms.channels;
 
 import co.aikar.commands.ACFBukkitUtil;
-import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,7 +16,7 @@ import java.util.List;
 public class Local extends ChatChannel {
     @Override
     public String getPrefix() {
-        return "&8[&5Local&8]&r ";
+        return "&a[%core_level%] &r";
     }
 
     @Override
@@ -42,6 +41,6 @@ public class Local extends ChatChannel {
 
     @Override
     public String getMessageFormat() {
-        return "&7%player_name%&8: &f%message%";
+        return "%luckperms_meta_name_color%%player_name%: &f%message%";
     }
 }

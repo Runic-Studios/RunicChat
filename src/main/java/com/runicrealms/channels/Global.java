@@ -15,7 +15,7 @@ import java.util.List;
 public class Global extends ChatChannel {
     @Override
     public String getPrefix() {
-        return "&8[&c!&8]&r ";
+        return "&c[!] &6%runic_guild_prefix%&r";
     }
 
     @Override
@@ -30,6 +30,6 @@ public class Global extends ChatChannel {
 
     @Override
     public String getMessageFormat() {
-        return "&7%player_name%&8: &f%message%";
+        return "%luckperms_meta_name_color%%player_name%: &f%message%";
     }
 }
