@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class PlayerMessageListener implements Listener {
         event.setCancelled(true);
 
         ChatChannel channel = RunicChat.getRunicChatAPI().getPlayerChatChannel(event.getPlayer());
-        List<Player> recipients = channel.getRecipients(event.getPlayer());
+        Collection<Player> recipients = channel.getRecipients(event.getPlayer());
 
         ChatChannelMessageEvent chatChannelMessageEvent = new ChatChannelMessageEvent(event.getPlayer(), channel, recipients, event.getMessage());
         Bukkit.getPluginManager().callEvent(chatChannelMessageEvent);
