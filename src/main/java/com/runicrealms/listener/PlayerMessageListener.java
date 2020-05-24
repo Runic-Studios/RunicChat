@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by KissOfFate

@@ -16,7 +16,7 @@ import java.util.List;
 public class Local extends ChatChannel {
     @Override
     public String getPrefix() {
-        return "&a[%core_level%] &r";
+        return "&a[%core_class_prefix%|%core_level%] &r";
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Local extends ChatChannel {
         List<Player> recipients = new ArrayList<>();
 
         for (Player target : Bukkit.getOnlinePlayers()) {
-            if(target != null /*&& RunicChat.getRunicChatAPI().getPlayerChatChannel(target).getName().equalsIgnoreCase(getName())*/) {
+            if (target != null) {
                 if (ACFBukkitUtil.isWithinDistance(player, target, 50)) {
                     recipients.add(target);
                 }

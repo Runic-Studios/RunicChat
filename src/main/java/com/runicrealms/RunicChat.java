@@ -1,6 +1,5 @@
 package com.runicrealms;
 
-import ch.jalu.configme.SettingsManager;
 import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.channels.Global;
