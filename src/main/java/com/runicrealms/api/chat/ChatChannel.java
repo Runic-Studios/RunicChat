@@ -2,6 +2,7 @@ package com.runicrealms.api.chat;
 
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public abstract class ChatChannel {
     /**
      * @return
      */
-    public abstract List<Player> getRecipients(Player player);
+    public abstract Collection<Player> getRecipients(Player player);
 
     /**
      * @return
