@@ -29,20 +29,18 @@ public class PlayerMessageListener implements Listener {
 
         ChatChannelMessageEvent chatChannelMessageEvent = new ChatChannelMessageEvent(event.getPlayer(), channel, recipients, event.getMessage());
         Bukkit.getPluginManager().callEvent(chatChannelMessageEvent);
-    }
+        if (!chatChannelMessageEvent.isCancelled()) {
+            if(RunicChat.getRunicChatAPI().getMutes().contains(event.getPlayer())) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(ChatColor.RED + "You are muted!");
+                return;
+            }
+            String formattedMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(event.getPlayer(), channel.getPrefix() + channel.getMessageFormat()));
 
-    @EventHandler
-    public void onChatChannelMessage(ChatChannelMessageEvent event) {
-        if(RunicChat.getRunicChatAPI().getMutes().contains(event.getMessageSender())) {
-            event.setCancelled(true);
-            event.getMessageSender().sendMessage(ChatColor.RED + "You are muted!");
-            return;
+            String finalMessage = formattedMessage.replace("%message%", event.getPlayer().hasPermission("runicchat.color") ? ChatColor.translateAlternateColorCodes('&', event.getMessage()) : event.getMessage());
+
+            event.getRecipients().forEach(p -> p.sendMessage(finalMessage));
         }
-        String formattedMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(event.getMessageSender(), event.getChatChannel().getPrefix() + event.getChatChannel().getMessageFormat()));
-
-        String finalMessage = formattedMessage.replace("%message%", event.getMessageSender().hasPermission("runicchat.color") ? ChatColor.translateAlternateColorCodes('&', event.getChatMessage()) : event.getChatMessage());
-
-        event.getRecipients().forEach(p -> p.sendMessage(finalMessage));
     }
 
 
