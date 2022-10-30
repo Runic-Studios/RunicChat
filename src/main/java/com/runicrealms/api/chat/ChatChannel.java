@@ -3,7 +3,6 @@ package com.runicrealms.api.chat;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by KissOfFate
@@ -18,12 +17,15 @@ public abstract class ChatChannel {
     public abstract String getPrefix();
 
     /**
-     * @return Channel NAme
+     * @return Channel Name
      */
     public abstract String getName();
 
     /**
-     * @return
+     * A list of players who will receive a given message
+     *
+     * @param player who sent the message
+     * @return a collection of players to receive message
      */
     public abstract Collection<Player> getRecipients(Player player);
 

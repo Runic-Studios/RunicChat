@@ -6,7 +6,7 @@
 
     <groupId>com.runicrealms</groupId>
     <artifactId>RunicChat</artifactId>
-    <version>1.16.4</version>
+    <version>1.16.5</version>
 
     <name>RunicChat</name>
     <url>https://www.gitlab.com/RunicRealms/RunicChat</url>
@@ -23,6 +23,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <fileOutput>${project.basedir}/../lib</fileOutput>
     </properties>
 
     <build>
@@ -33,6 +34,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
+                    <outputDirectory>${fileOutput}</outputDirectory>
                     <finalName>${project.name}-${project.version}</finalName>
                 </configuration>
             </plugin>
@@ -99,7 +101,7 @@
         <!-- Placeholder API -->
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <!-- ACF -->
         <repository>
@@ -113,14 +115,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- Paper API -->
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- Command framework using annotations -->

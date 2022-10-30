@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class ChatManager implements RunicChatAPI {
 
-    private List<ChatChannel> registeredChannels = new ArrayList<>();
-    private HashMap<Player, ChatChannel> playerChatChannels = new HashMap<>();
-    private List<Player> mutedPlayers = new ArrayList<>();
+    private final List<ChatChannel> registeredChannels = new ArrayList<>();
+    private final HashMap<Player, ChatChannel> playerChatChannels = new HashMap<>();
+    private final List<Player> mutedPlayers = new ArrayList<>();
 
     @Override
     public boolean registerChatChannel(ChatChannel channel) {
@@ -37,7 +37,7 @@ public class ChatManager implements RunicChatAPI {
 
     @Override
     public ChatChannel setPlayerChatChannel(Player player, ChatChannel channel) {
-        if(!playerChatChannels.containsKey(player)) playerChatChannels.put(player, channel);
+        if (!playerChatChannels.containsKey(player)) playerChatChannels.put(player, channel);
         else {
             playerChatChannels.remove(player);
             playerChatChannels.put(player, channel);
@@ -50,13 +50,19 @@ public class ChatManager implements RunicChatAPI {
         return false;
     }
 
+    /**
+     * Mutes a player, or un-mutes if mute is false
+     *
+     * @param player to mute or un-mute
+     * @param mute   true if player should be muted, false to be un-muted
+     */
     @Override
     public void mute(Player player, boolean mute) {
-        if(mutedPlayers.contains(player) && !mute) {
+        if (mutedPlayers.contains(player) && !mute) {
             mutedPlayers.remove(player);
         }
 
-        if(!mutedPlayers.contains(player) && mute) {
+        if (!mutedPlayers.contains(player) && mute) {
             mutedPlayers.add(player);
         }
     }

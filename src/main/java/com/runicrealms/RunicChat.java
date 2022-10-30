@@ -39,7 +39,12 @@ public class RunicChat extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
     }
 
-    public static RunicChatAPI getRunicChatAPI() { return runicChatAPI; }
-    protected static PaperCommandManager getCommandManager() { return commandManager; }
+    public static RunicChatAPI getRunicChatAPI() {
+        return runicChatAPI;
+    }
+
+    protected static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
 
 }

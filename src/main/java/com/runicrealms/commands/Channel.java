@@ -23,11 +23,11 @@ public class Channel extends BaseCommand {
     @Syntax("<channel>")
     public void execute(Player player, String[] args) {
 
-        if(args == null) {
-            String channelList = "";
+        if (args == null) {
+            StringBuilder channelList = new StringBuilder();
 
-            for(ChatChannel channel : runicChatAPI.getChatChannels())
-                channelList += channel.getName() + ", ";
+            for (ChatChannel channel : runicChatAPI.getChatChannels())
+                channelList.append(channel.getName()).append(", ");
 
             player.sendMessage(ChatColor.GRAY + "Current Channels: " + ChatColor.GREEN + channelList);
             return;
@@ -37,7 +37,7 @@ public class Channel extends BaseCommand {
 
         ChatChannel channel = runicChatAPI.getChatChannels().stream().filter(ch -> ch.getName().equalsIgnoreCase(inputChannel)).findFirst().orElseGet(null);
 
-        if(channel != null) {
+        if (channel != null) {
             player.sendMessage(ChatColor.DARK_GREEN + "Set your chat channel to '" + ChatColor.GREEN + channel.getName() + ChatColor.DARK_GREEN + "'");
             runicChatAPI.setPlayerChatChannel(player, channel);
         } else {

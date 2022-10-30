@@ -14,9 +14,10 @@ import java.util.List;
  * Time: 9:25 PM
  */
 public class Local extends ChatChannel {
+
     @Override
     public String getPrefix() {
-        return "&a[%core_class_prefix%|%core_level%] &r";
+        return "&a[%core_class_prefix%|%core_level%] %core_prefix% &r";
     }
 
     @Override

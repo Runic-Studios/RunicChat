@@ -13,9 +13,10 @@ import java.util.List;
  * Time: 4:09 PM
  */
 public class Global extends ChatChannel {
+
     @Override
     public String getPrefix() {
-        return "&c[!] &6%runic_guild_prefix%&r";
+        return "&c[!] &6%runic_guild_prefix%&3%core_prefix% &r";
     }
 
     @Override
