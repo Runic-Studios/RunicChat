@@ -22,7 +22,7 @@ public class Local extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&a[%core_class_prefix%|%core_level%] %core_prefix% &r";
+        return "&e[Local] &r";
     }
 
     @Override
@@ -53,17 +53,15 @@ public class Local extends ChatChannel {
     @Override
     public TextComponent getTextComponent(Player player, String finalMessage) {
         TextComponent textComponent = new TextComponent(finalMessage);
-        textComponent.setHoverEvent
+        textComponent.setHoverEvent(new HoverEvent
                 (
-                        new HoverEvent
-                                (
-                                        HoverEvent.Action.SHOW_TEXT,
-                                        new Text(PlaceholderAPI.setPlaceholders(player,
-                                                ChatColor.DARK_AQUA + "Title: " + ChatColor.AQUA + "%core_prefix%" +
-                                                        ChatColor.GOLD + "\n%runic_guild_prefix%"
-                                        ))
-                                )
-                );
+                        HoverEvent.Action.SHOW_TEXT,
+                        new Text(PlaceholderAPI.setPlaceholders(player,
+                                ChatColor.DARK_AQUA + "Title: " + ChatColor.AQUA + "%core_prefix%" +
+                                        ChatColor.GREEN + "\n%core_class% lv. %core_level%"
+                        ))
+                )
+        );
         return textComponent;
     }
 }
