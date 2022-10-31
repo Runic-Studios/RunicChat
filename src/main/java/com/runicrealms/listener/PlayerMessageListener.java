@@ -45,9 +45,21 @@ public class PlayerMessageListener implements Listener {
                         event.getChatChannel().getPrefix() + event.getChatChannel().getMessageFormat()
                 ));
 
-        String finalMessage = formattedMessage.replace("%message%", event.getMessageSender().hasPermission("runicchat.color") ? ChatColor.translateAlternateColorCodes('&', event.getChatMessage()) : event.getChatMessage());
+        String finalMessage = formattedMessage.replace
+                (
+                        "%message%",
+                        event.getMessageSender().hasPermission("runicchat.color")
+                                ?
+                                ChatColor.translateAlternateColorCodes('&', event.getChatMessage())
+                                :
+                                event.getChatMessage()
+                );
 
-        if (!event.isCancelled()) event.getRecipients().forEach(p -> p.sendMessage(finalMessage));
+
+        if (!event.isCancelled()) event.getRecipients().forEach
+                (
+                        p -> p.spigot().sendMessage(event.getChatChannel().getTextComponent(event.getMessageSender(), finalMessage))
+                );
     }
 
 
