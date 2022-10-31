@@ -21,7 +21,7 @@ public class Global extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&c[Global] &6[%guild_prefix%] &r";
+        return "&c[Global] &6%guild_prefix%&r";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Global extends ChatChannel {
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(PlaceholderAPI.setPlaceholders(player,
                                 ChatColor.DARK_AQUA + "Title: " + ChatColor.AQUA + "%core_prefix%" +
-                                        ChatColor.GOLD + "\nGuild: %guild_prefix%" +
+                                        ChatColor.GOLD + "\nGuild: %guild_name%" +
                                         ChatColor.GOLD + "\nGuild Score: %guild_score%"
                         ))
                 )
