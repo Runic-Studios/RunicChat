@@ -22,7 +22,7 @@ public class Local extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&e[Local] &r";
+        return "&e[Local] &3%core_prefix_formatted%&r";
     }
 
     @Override
