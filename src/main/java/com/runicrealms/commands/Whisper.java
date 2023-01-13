@@ -2,23 +2,37 @@ package com.runicrealms.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.runicrealms.RunicChat;
 import com.runicrealms.api.RunicChatAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by KissOfFate
  * Date: 5/10/2020
  * Time: 8:11 PM
  */
-@CommandAlias("whisper|w|msg|message")
-public class Message extends BaseCommand {
+@CommandAlias("whisper|w|msg|message|dm")
+public class Whisper extends BaseCommand {
 
     @Dependency
     private RunicChatAPI runicChatAPI;
 
+    public Whisper() {
+        RunicChat.getCommandManager().getCommandCompletions().registerAsyncCompletion("online", context -> {
+            Set<String> players = new HashSet<>();
+            for (Player player : Bukkit.getOnlinePlayers())
+                players.add(player.getName());
+            return players;
+        });
+    }
+
     @Default
+    @CommandCompletion("@online")
     @CommandPermission("runicchat.message")
     @Syntax("<player> [message]")
     public void execute(Player sender, @Single String targetName, String message) {
@@ -44,10 +58,10 @@ public class Message extends BaseCommand {
         if (color) {
             sender.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&8[&bYou &7-> &a" + target.getName() + "&8] " + message));
+                            "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
             target.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&8[&a" + sender.getName() + " &7-> &bYou&8] " + message));
+                            "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("runicchat.spy")) {
@@ -59,10 +73,10 @@ public class Message extends BaseCommand {
         } else {
             sender.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&8[&bYou &7-> &a" + target.getName() + "&8] ") + message);
+                            "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
             target.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&8[&a" + sender.getName() + " &7-> &bYou&8] ") + message);
+                            "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("runicchat.spy")) {

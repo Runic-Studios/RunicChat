@@ -5,7 +5,7 @@ import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.channels.Global;
 import com.runicrealms.channels.Local;
 import com.runicrealms.commands.Channel;
-import com.runicrealms.commands.Message;
+import com.runicrealms.commands.Whisper;
 import com.runicrealms.listener.PlayerMessageListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +33,7 @@ public class RunicChat extends JavaPlugin {
 
         // Register Commands
         commandManager.registerCommand(new Channel());
-        commandManager.registerCommand(new Message());
+        commandManager.registerCommand(new Whisper());
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
@@ -43,7 +43,7 @@ public class RunicChat extends JavaPlugin {
         return runicChatAPI;
     }
 
-    protected static PaperCommandManager getCommandManager() {
+    public static PaperCommandManager getCommandManager() {
         return commandManager;
     }
 

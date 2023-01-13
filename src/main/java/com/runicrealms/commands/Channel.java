@@ -2,10 +2,14 @@ package com.runicrealms.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.runicrealms.RunicChat;
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.api.chat.ChatChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by KissOfFate
@@ -18,7 +22,17 @@ public class Channel extends BaseCommand {
     @Dependency
     private RunicChatAPI runicChatAPI;
 
+    public Channel() {
+        RunicChat.getCommandManager().getCommandCompletions().registerAsyncCompletion("channels", context -> {
+            Set<String> channels = new HashSet<>();
+            for (ChatChannel channel : runicChatAPI.getChatChannels())
+                channels.add(channel.getName());
+            return channels;
+        });
+    }
+
     @Default
+    @CommandCompletion("@channels")
     @CommandPermission("runicchat.channel")
     @Syntax("<channel>")
     public void execute(Player player, String[] args) {
