@@ -22,7 +22,7 @@ public class Local extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&e[Local] &3%core_prefix_formatted%&r";
+        return "&e[Local] &3%core_prefix_formatted%&r%luckperms_meta_name_color%%player_name%: ";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Local extends ChatChannel {
 
     @Override
     public String getMessageFormat() {
-        return "%luckperms_meta_name_color%%player_name%: &f%message%";
+        return "&f%message%";
     }
 
     @Override

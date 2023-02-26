@@ -4,6 +4,7 @@ import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.api.event.ChatChannelMessageEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -39,26 +40,25 @@ public class PlayerMessageListener implements Listener {
             return;
         }
 
-        String formattedMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders
-                (
-                        event.getMessageSender(),
-                        event.getChatChannel().getPrefix() + event.getChatChannel().getMessageFormat()
-                ));
+        String prefix = ChatColor.translateAlternateColorCodes('&',
+                PlaceholderAPI.setPlaceholders
+                        (
+                                event.getMessageSender(),
+                                event.getChatChannel().getPrefix()
+                        ));
 
-        String finalMessage = formattedMessage.replace
-                (
-                        "%message%",
-                        event.getMessageSender().hasPermission("runicchat.color")
-                                ?
-                                ChatColor.translateAlternateColorCodes('&', event.getChatMessage())
-                                :
-                                event.getChatMessage()
-                );
+        TextComponent messageComponent =
+                RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(),
+                        event.getChatMessage());
 
-
-        if (!event.isCancelled()) event.getRecipients().forEach
+        if (event.isCancelled()) return;
+        event.getRecipients().forEach
                 (
-                        p -> p.spigot().sendMessage(event.getChatChannel().getTextComponent(event.getMessageSender(), finalMessage))
+                        player -> player.spigot().sendMessage
+                                (
+                                        event.getChatChannel().getTextComponent(event.getMessageSender(), prefix),
+                                        messageComponent
+                                )
                 );
     }
 

@@ -1,7 +1,9 @@
 package com.runicrealms.api;
 
 import com.runicrealms.api.chat.ChatChannel;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -11,6 +13,25 @@ import java.util.List;
  * Time: 8:25 PM
  */
 public interface RunicChatAPI {
+
+    /**
+     * Converts an {@link org.bukkit.inventory.ItemStack} to a Json string
+     * for sending with {@link net.md_5.bungee.api.chat.BaseComponent}'s.
+     *
+     * @param itemStack the item to convert
+     * @return the Json string representation of the item
+     */
+    String convertItemStackToJson(ItemStack itemStack);
+
+    /**
+     * Performs any necessary mutation on the chat message.
+     * Updates chat colors if player has permission and adds hover/click events as necessary
+     *
+     * @param sender  of the message
+     * @param message the string to mutate
+     * @return a text component with all necessary changes
+     */
+    TextComponent parseMessage(Player sender, String message);
 
     /**
      * Attempt to register the channels channel into the plugin
@@ -32,7 +53,7 @@ public interface RunicChatAPI {
     /**
      * Set the chat channel of a user
      *
-     * @param player player
+     * @param player  player
      * @param channel channel to set player too
      * @return chat channel of player
      */
@@ -49,7 +70,7 @@ public interface RunicChatAPI {
     /**
      * Mute or Unmute user
      */
-    void mute(Player player, boolean mute);;
+    void mute(Player player, boolean mute);
 
     List<Player> getMutes();
 }

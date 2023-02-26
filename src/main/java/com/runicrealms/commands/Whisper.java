@@ -55,13 +55,13 @@ public class Whisper extends BaseCommand {
 
         boolean color = sender.hasPermission("runicchat.color");
 
+        sender.sendMessage(
+                ChatColor.translateAlternateColorCodes('&',
+                        "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
+        target.sendMessage(
+                ChatColor.translateAlternateColorCodes('&',
+                        "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
         if (color) {
-            sender.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&',
-                            "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
-            target.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&',
-                            "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("runicchat.spy")) {
@@ -71,12 +71,6 @@ public class Whisper extends BaseCommand {
             }
 
         } else {
-            sender.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&',
-                            "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
-            target.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&',
-                            "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("runicchat.spy")) {
