@@ -28,6 +28,7 @@ public class ChatManager implements RunicChatAPI {
     private final HashMap<Player, ChatChannel> playerChatChannels = new HashMap<>();
     private final List<Player> mutedPlayers = new ArrayList<>();
 
+    @SuppressWarnings("deprecation")
     @Override
     public String convertItemStackToJson(ItemStack itemStack) {
         // ItemStack methods to get a net.minecraft.server.ItemStack object for serialization
@@ -58,28 +59,39 @@ public class ChatManager implements RunicChatAPI {
 
     @SuppressWarnings("deprecation")
     @Override
-    public TextComponent parseMessage(Player sender, String message) {
+    public List<TextComponent> parseMessage(Player sender, String message) {
         String finalMessage =
                 sender.hasPermission("runicchat.color")
                         ?
                         ChatColor.translateAlternateColorCodes('&', message)
                         :
                         message;
-        TextComponent textComponent = new TextComponent(finalMessage);
+        List<TextComponent> textComponentList = new ArrayList<>();
 
         // Handle [Item] hover
         if (finalMessage.toLowerCase().contains("[item]")) {
+            String[] array = finalMessage.split("\\[item]");
+            TextComponent item = new TextComponent(ChatColor.GREEN + "[Item]" + ChatColor.RESET);
             ItemStack heldItem = sender.getInventory().getItemInMainHand();
             String itemJson = convertItemStackToJson(heldItem);
             BaseComponent[] hoverEventComponents = new BaseComponent[]{
                     new TextComponent(itemJson)
             };
-            textComponent.setHoverEvent(new HoverEvent(
+            item.setHoverEvent(new HoverEvent(
                     HoverEvent.Action.SHOW_ITEM,
                     hoverEventComponents
             ));
+            if (array.length > 0) {
+                textComponentList.add(new TextComponent(array[0]));
+            }
+            textComponentList.add(item);
+            if (array.length > 1) {
+                textComponentList.add(new TextComponent(array[1]));
+            }
+            return textComponentList;
         }
-        return textComponent;
+        textComponentList.add(new TextComponent(finalMessage));
+        return textComponentList;
     }
 
     @Override

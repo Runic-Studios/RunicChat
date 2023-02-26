@@ -12,7 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by KissOfFate
@@ -47,17 +49,17 @@ public class PlayerMessageListener implements Listener {
                                 event.getChatChannel().getPrefix()
                         ));
 
-        TextComponent messageComponent =
-                RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(),
-                        event.getChatMessage());
+        List<TextComponent> componentList = new ArrayList<>();
+        componentList.add(event.getChatChannel().getTextComponent(event.getMessageSender(), prefix));
+        componentList.addAll(RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(),
+                event.getChatMessage()));
 
         if (event.isCancelled()) return;
         event.getRecipients().forEach
                 (
                         player -> player.spigot().sendMessage
                                 (
-                                        event.getChatChannel().getTextComponent(event.getMessageSender(), prefix),
-                                        messageComponent
+                                        componentList.toArray(new TextComponent[0])
                                 )
                 );
     }

@@ -37,7 +37,7 @@ public class Channel extends BaseCommand {
     @Syntax("<channel>")
     public void execute(Player player, String[] args) {
 
-        if (args == null) {
+        if (args == null || args.length == 0) {
             StringBuilder channelList = new StringBuilder();
 
             for (ChatChannel channel : runicChatAPI.getChatChannels())

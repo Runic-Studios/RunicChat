@@ -24,14 +24,15 @@ public interface RunicChatAPI {
     String convertItemStackToJson(ItemStack itemStack);
 
     /**
+     * Returns a list of text components which is mutable
      * Performs any necessary mutation on the chat message.
      * Updates chat colors if player has permission and adds hover/click events as necessary
      *
      * @param sender  of the message
      * @param message the string to mutate
-     * @return a text component with all necessary changes
+     * @return a list of text components with all necessary changes to original string. Mutable
      */
-    TextComponent parseMessage(Player sender, String message);
+    List<TextComponent> parseMessage(Player sender, String message);
 
     /**
      * Attempt to register the channels channel into the plugin
