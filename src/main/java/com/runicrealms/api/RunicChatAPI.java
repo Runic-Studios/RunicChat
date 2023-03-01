@@ -35,6 +35,16 @@ public interface RunicChatAPI {
     List<TextComponent> parseMessage(Player sender, String message);
 
     /**
+     * Returns a list of text components associated with a message containing "[item]", which
+     * links the player's held item in chat
+     *
+     * @param sender  who sent the chat message
+     * @param message the contents
+     * @return a list of components that have been modified
+     */
+    List<TextComponent> itemHoverComponentList(Player sender, String message);
+
+    /**
      * Attempt to register the channels channel into the plugin
      *
      * @return true if successful, false if not

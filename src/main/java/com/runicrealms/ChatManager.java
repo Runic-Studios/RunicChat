@@ -57,7 +57,6 @@ public class ChatManager implements RunicChatAPI {
         return itemAsJsonObject.toString();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public List<TextComponent> parseMessage(Player sender, String message) {
         String finalMessage =
@@ -70,27 +69,41 @@ public class ChatManager implements RunicChatAPI {
 
         // Handle [Item] hover
         if (finalMessage.toLowerCase().contains("[item]")) {
-            String[] array = finalMessage.split("\\[item]");
-            TextComponent item = new TextComponent(ChatColor.GREEN + "[Item]" + ChatColor.RESET);
-            ItemStack heldItem = sender.getInventory().getItemInMainHand();
-            String itemJson = convertItemStackToJson(heldItem);
-            BaseComponent[] hoverEventComponents = new BaseComponent[]{
-                    new TextComponent(itemJson)
-            };
-            item.setHoverEvent(new HoverEvent(
-                    HoverEvent.Action.SHOW_ITEM,
-                    hoverEventComponents
-            ));
-            if (array.length > 0) {
-                textComponentList.add(new TextComponent(array[0]));
-            }
-            textComponentList.add(item);
-            if (array.length > 1) {
-                textComponentList.add(new TextComponent(array[1]));
-            }
-            return textComponentList;
+            return itemHoverComponentList(sender, finalMessage);
         }
         textComponentList.add(new TextComponent(finalMessage));
+        return textComponentList;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public List<TextComponent> itemHoverComponentList(Player sender, String message) {
+        List<TextComponent> textComponentList = new ArrayList<>();
+        String[] array = message.split("\\[item]");
+        ItemStack heldItem = sender.getInventory().getItemInMainHand();
+        String itemName;
+        if (heldItem.getItemMeta() != null) {
+            itemName =
+                    ChatColor.GREEN + "[" + heldItem.getItemMeta().getDisplayName() + ChatColor.GREEN + "]";
+        } else {
+            itemName = ChatColor.GREEN + "[Item]";
+        }
+        TextComponent item = new TextComponent(itemName + ChatColor.RESET);
+        String itemJson = convertItemStackToJson(heldItem);
+        BaseComponent[] hoverEventComponents = new BaseComponent[]{
+                new TextComponent(itemJson)
+        };
+        item.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_ITEM,
+                hoverEventComponents
+        ));
+        if (array.length > 0) {
+            textComponentList.add(new TextComponent(array[0]));
+        }
+        textComponentList.add(item);
+        if (array.length > 1) {
+            textComponentList.add(new TextComponent(array[1]));
+        }
         return textComponentList;
     }
 
