@@ -9,6 +9,13 @@ import com.runicrealms.commands.Whisper;
 import com.runicrealms.listener.PlayerMessageListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by KissOfFate
@@ -16,9 +23,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Time: 8:27 PM
  */
 public class RunicChat extends JavaPlugin {
-
     private static RunicChatAPI runicChatAPI;
     private static PaperCommandManager commandManager;
+    private static Set<String> wordsToFilter;
 
     @Override
     public void onEnable() {
@@ -37,6 +44,20 @@ public class RunicChat extends JavaPlugin {
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
+
+        // Chat filter
+        Yaml yaml = new Yaml();
+        File filePath = new File(this.getDataFolder(), "words-to-filter.yml");
+        try (FileInputStream input = new FileInputStream(filePath)) {
+            List<String> data = yaml.load(input);
+            wordsToFilter = new HashSet<>(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Set<String> getWordsToFilter() {
+        return wordsToFilter;
     }
 
     public static RunicChatAPI getRunicChatAPI() {

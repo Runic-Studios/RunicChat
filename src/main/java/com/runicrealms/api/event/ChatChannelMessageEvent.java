@@ -9,16 +9,16 @@ import org.bukkit.event.HandlerList;
 import java.util.Collection;
 
 /**
+ * An ASYNC event to send chat messages
  * Created by KissOfFate
  * Date: 4/20/2020
  * Time: 8:37 PM
  */
 public class ChatChannelMessageEvent extends Event implements Cancellable {
-
-    private Player messageSender;
-    private ChatChannel chatChannel;
-    private Collection<Player> recipients;
-    private String chatMessage;
+    private final Player messageSender;
+    private final ChatChannel chatChannel;
+    private final Collection<Player> recipients;
+    private final String chatMessage;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
@@ -38,7 +38,9 @@ public class ChatChannelMessageEvent extends Event implements Cancellable {
         return this.chatChannel;
     }
 
-    public Collection<Player> getRecipients() { return this.recipients; }
+    public Collection<Player> getRecipients() {
+        return this.recipients;
+    }
 
     public String getChatMessage() {
         return this.chatMessage;

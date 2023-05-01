@@ -65,8 +65,10 @@ public class ChatManager implements RunicChatAPI {
                         ChatColor.translateAlternateColorCodes('&', message)
                         :
                         message;
+        // Use a regular expression to filter bad words
+        String regex = "\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
+        finalMessage = finalMessage.replaceAll(regex, "***");
         List<TextComponent> textComponentList = new ArrayList<>();
-
         // Handle [Item] hover
         if (finalMessage.toLowerCase().contains("[item]")) {
             return itemHoverComponentList(sender, finalMessage);
