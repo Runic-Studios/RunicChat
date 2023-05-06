@@ -66,7 +66,7 @@ public class ChatManager implements RunicChatAPI {
                         :
                         message;
         // Use a regular expression to filter bad words
-        String regex = "\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
+        String regex = "(?i)\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
         finalMessage = finalMessage.replaceAll(regex, "***");
         List<TextComponent> textComponentList = new ArrayList<>();
         // Handle [Item] hover
