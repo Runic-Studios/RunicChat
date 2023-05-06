@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -69,6 +70,8 @@ public class ChatManager implements RunicChatAPI {
         String regex = "(?i)\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
         finalMessage = finalMessage.replaceAll(regex, "***");
         List<TextComponent> textComponentList = new ArrayList<>();
+        // Handle [coords]
+        finalMessage = replaceCoordsWithPlayerLocation(sender, finalMessage);
         // Handle [Item] hover
         if (finalMessage.toLowerCase().contains("[item]")) {
             return itemHoverComponentList(sender, finalMessage);
@@ -76,6 +79,15 @@ public class ChatManager implements RunicChatAPI {
         textComponentList.add(new TextComponent(finalMessage));
         return textComponentList;
     }
+
+    private static String replaceCoordsWithPlayerLocation(Player player, String message) {
+        // Get player's location and format it as a string
+        Location location = player.getLocation();
+        String formattedLocation = String.format(player.getName() + "'s location: (%dx, %dy, %dz)", location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        // Replace occurrences of [coords] with the player's location
+        return message.replace("[coords]", formattedLocation);
+    }
+
 
     @SuppressWarnings("deprecation")
     @Override
