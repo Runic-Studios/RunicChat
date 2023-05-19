@@ -1,7 +1,11 @@
 package com.runicrealms.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Single;
+import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.RunicChat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

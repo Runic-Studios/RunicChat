@@ -3,6 +3,7 @@ version: ${project.version}
 main: com.runicrealms.RunicChat
 authors: [OhCreative]
 softdepend: [PlaceholderAPI]
+depend: [RunicCommon]
 description: Chat Plugin for Runic Realms
 website: https://runicrealms.com/
 permissions:
