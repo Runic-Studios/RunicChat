@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.channels.Global;
 import com.runicrealms.channels.Local;
+import com.runicrealms.channels.Trade;
 import com.runicrealms.commands.Channel;
 import com.runicrealms.commands.Whisper;
 import com.runicrealms.listener.PlayerMessageListener;
@@ -27,6 +28,18 @@ public class RunicChat extends JavaPlugin {
     private static PaperCommandManager commandManager;
     private static Set<String> wordsToFilter;
 
+    public static Set<String> getWordsToFilter() {
+        return wordsToFilter;
+    }
+
+    public static RunicChatAPI getRunicChatAPI() {
+        return runicChatAPI;
+    }
+
+    public static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
+
     @Override
     public void onEnable() {
         runicChatAPI = new ChatManager();
@@ -37,6 +50,7 @@ public class RunicChat extends JavaPlugin {
         // Register Chat Channels
         runicChatAPI.registerChatChannel(new Global());
         runicChatAPI.registerChatChannel(new Local());
+        runicChatAPI.registerChatChannel(new Trade());
 
         // Register Commands
         commandManager.registerCommand(new Channel());
@@ -54,18 +68,6 @@ public class RunicChat extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static Set<String> getWordsToFilter() {
-        return wordsToFilter;
-    }
-
-    public static RunicChatAPI getRunicChatAPI() {
-        return runicChatAPI;
-    }
-
-    public static PaperCommandManager getCommandManager() {
-        return commandManager;
     }
 
 }
