@@ -4,8 +4,12 @@ import com.runicrealms.api.chat.ChatChannel;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by KissOfFate
@@ -81,7 +85,15 @@ public interface RunicChatAPI {
     /**
      * Mute or Unmute user
      */
-    void mute(Player player, boolean mute);
+    void mute(UUID player, boolean mute);
 
-    List<Player> getMutes();
+    /**
+     * Get all muted players
+     */
+    Collection<UUID> getMutes();
+
+    /**
+     * Get all tasks that are set to unmute players
+     */
+    Map<UUID, BukkitTask> getUnmuteTasks();
 }

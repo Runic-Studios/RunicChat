@@ -36,7 +36,7 @@ public class PlayerMessageListener implements Listener {
 
     @EventHandler
     public void onChatChannelMessage(ChatChannelMessageEvent event) {
-        if (RunicChat.getRunicChatAPI().getMutes().contains(event.getMessageSender())) {
+        if (RunicChat.getRunicChatAPI().getMutes().contains(event.getMessageSender().getUniqueId())) {
             event.setCancelled(true);
             event.getMessageSender().sendMessage(ChatColor.RED + "You are muted!");
             return;
