@@ -11,11 +11,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -27,7 +32,17 @@ public class ChatManager implements RunicChatAPI {
 
     private final List<ChatChannel> registeredChannels = new ArrayList<>();
     private final HashMap<Player, ChatChannel> playerChatChannels = new HashMap<>();
-    private final List<Player> mutedPlayers = new ArrayList<>();
+    private final Set<UUID> mutedPlayers = new HashSet<>();
+
+    private final Map<UUID, BukkitTask> unmuteTasks = new HashMap<>();
+
+    private static String replaceCoordsWithPlayerLocation(Player player, String message) {
+        // Get player's location and format it as a string
+        Location location = player.getLocation();
+        String formattedLocation = String.format(player.getName() + "'s location: (%dx, %dy, %dz)", location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        // Replace occurrences of [coords] with the player's location
+        return message.replace("[coords]", formattedLocation);
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -79,15 +94,6 @@ public class ChatManager implements RunicChatAPI {
         textComponentList.add(new TextComponent(finalMessage));
         return textComponentList;
     }
-
-    private static String replaceCoordsWithPlayerLocation(Player player, String message) {
-        // Get player's location and format it as a string
-        Location location = player.getLocation();
-        String formattedLocation = String.format(player.getName() + "'s location: (%dx, %dy, %dz)", location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        // Replace occurrences of [coords] with the player's location
-        return message.replace("[coords]", formattedLocation);
-    }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -159,7 +165,7 @@ public class ChatManager implements RunicChatAPI {
      * @param mute   true if player should be muted, false to be un-muted
      */
     @Override
-    public void mute(Player player, boolean mute) {
+    public void mute(UUID player, boolean mute) {
         if (mutedPlayers.contains(player) && !mute) {
             mutedPlayers.remove(player);
         }
@@ -170,7 +176,13 @@ public class ChatManager implements RunicChatAPI {
     }
 
     @Override
-    public List<Player> getMutes() {
+    public Set<UUID> getMutes() {
         return mutedPlayers;
     }
+
+    @Override
+    public Map<UUID, BukkitTask> getUnmuteTasks() {
+        return unmuteTasks;
+    }
+
 }

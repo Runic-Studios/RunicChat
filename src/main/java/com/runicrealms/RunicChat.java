@@ -6,6 +6,8 @@ import com.runicrealms.channels.Global;
 import com.runicrealms.channels.Local;
 import com.runicrealms.channels.Trade;
 import com.runicrealms.commands.Channel;
+import com.runicrealms.commands.Mute;
+import com.runicrealms.commands.Unmute;
 import com.runicrealms.commands.Whisper;
 import com.runicrealms.listener.PlayerMessageListener;
 import org.bukkit.Bukkit;
@@ -55,6 +57,8 @@ public class RunicChat extends JavaPlugin {
         // Register Commands
         commandManager.registerCommand(new Channel());
         commandManager.registerCommand(new Whisper());
+        commandManager.registerCommand(new Mute());
+        commandManager.registerCommand(new Unmute());
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
