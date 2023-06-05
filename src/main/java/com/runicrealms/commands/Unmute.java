@@ -33,7 +33,7 @@ public class Unmute extends BaseCommand {
     }
 
     @Default
-    @CommandPermission("runicchat.mute")
+    @CommandPermission("runicchat.unmute")
     @Syntax("<player>")
     @CommandCompletion("@muted-players")
     public void execute(CommandSender sender, @Single String targetName) {
