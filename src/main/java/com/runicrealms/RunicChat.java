@@ -5,6 +5,7 @@ import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.channels.Global;
 import com.runicrealms.channels.Local;
 import com.runicrealms.commands.Channel;
+import com.runicrealms.commands.Mute;
 import com.runicrealms.commands.Whisper;
 import com.runicrealms.listener.PlayerMessageListener;
 import org.bukkit.Bukkit;
@@ -27,6 +28,18 @@ public class RunicChat extends JavaPlugin {
     private static PaperCommandManager commandManager;
     private static Set<String> wordsToFilter;
 
+    public static Set<String> getWordsToFilter() {
+        return wordsToFilter;
+    }
+
+    public static RunicChatAPI getRunicChatAPI() {
+        return runicChatAPI;
+    }
+
+    public static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
+
     @Override
     public void onEnable() {
         runicChatAPI = new ChatManager();
@@ -41,6 +54,7 @@ public class RunicChat extends JavaPlugin {
         // Register Commands
         commandManager.registerCommand(new Channel());
         commandManager.registerCommand(new Whisper());
+        commandManager.registerCommand(new Mute());
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
@@ -54,18 +68,6 @@ public class RunicChat extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static Set<String> getWordsToFilter() {
-        return wordsToFilter;
-    }
-
-    public static RunicChatAPI getRunicChatAPI() {
-        return runicChatAPI;
-    }
-
-    public static PaperCommandManager getCommandManager() {
-        return commandManager;
     }
 
 }
