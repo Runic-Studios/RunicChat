@@ -1,6 +1,7 @@
 package com.runicrealms.api;
 
 import com.runicrealms.api.chat.ChatChannel;
+import com.runicrealms.util.ProfanityFilter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -96,4 +97,7 @@ public interface RunicChatAPI {
      * Get all tasks that are set to unmute players
      */
     Map<UUID, BukkitTask> getUnmuteTasks();
+
+    ProfanityFilter getProfanityFilter();
+
 }

@@ -2,6 +2,7 @@ package com.runicrealms;
 
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.api.chat.ChatChannel;
+import com.runicrealms.util.ProfanityFilter;
 import com.runicrealms.util.ReflectionUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -35,6 +36,8 @@ public class ChatManager implements RunicChatAPI {
     private final Set<UUID> mutedPlayers = new HashSet<>();
 
     private final Map<UUID, BukkitTask> unmuteTasks = new HashMap<>();
+
+    private final ProfanityFilter filter = new ProfanityFilter(RunicChat.getWordsToFilter());
 
     private static String replaceCoordsWithPlayerLocation(Player player, String message) {
         // Get player's location and format it as a string
@@ -82,8 +85,9 @@ public class ChatManager implements RunicChatAPI {
                         :
                         message;
         // Use a regular expression to filter bad words
-        String regex = "(?i)\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
-        finalMessage = finalMessage.replaceAll(regex, "***");
+//        String regex = "(?i)\\b(" + String.join("|", RunicChat.getWordsToFilter()) + ")\\b";
+//        finalMessage = finalMessage.replaceAll(regex, "***");
+        finalMessage = getProfanityFilter().filter(finalMessage);
         List<TextComponent> textComponentList = new ArrayList<>();
         // Handle [coords]
         finalMessage = replaceCoordsWithPlayerLocation(sender, finalMessage);
@@ -183,6 +187,11 @@ public class ChatManager implements RunicChatAPI {
     @Override
     public Map<UUID, BukkitTask> getUnmuteTasks() {
         return unmuteTasks;
+    }
+
+    @Override
+    public ProfanityFilter getProfanityFilter() {
+        return this.filter;
     }
 
 }

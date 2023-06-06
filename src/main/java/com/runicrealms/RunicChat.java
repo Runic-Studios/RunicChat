@@ -44,6 +44,16 @@ public class RunicChat extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Chat filter
+        Yaml yaml = new Yaml();
+        File filePath = new File(this.getDataFolder(), "words-to-filter.yml");
+        try (FileInputStream input = new FileInputStream(filePath)) {
+            List<String> data = yaml.load(input);
+            wordsToFilter = new HashSet<>(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         runicChatAPI = new ChatManager();
         commandManager = new PaperCommandManager(this);
 
@@ -62,16 +72,6 @@ public class RunicChat extends JavaPlugin {
 
         // Register Listeners
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerMessageListener(), this);
-
-        // Chat filter
-        Yaml yaml = new Yaml();
-        File filePath = new File(this.getDataFolder(), "words-to-filter.yml");
-        try (FileInputStream input = new FileInputStream(filePath)) {
-            List<String> data = yaml.load(input);
-            wordsToFilter = new HashSet<>(data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }
