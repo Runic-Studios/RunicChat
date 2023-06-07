@@ -1,22 +1,28 @@
 package com.runicrealms.util;
 
+import org.bukkit.Bukkit;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class ProfanityFilter {
 
-    private final Set<String> words;
-    private final int largestWordLength;
+    private final Map<String, String> words;
 
     public ProfanityFilter(Set<String> words) {
-        this.words = words;
-        AtomicInteger longestWord = new AtomicInteger(0);
-        words.forEach(word -> {
-            if (word.length() > longestWord.get()) {
-                longestWord.set(word.length());
+        this.words = new HashMap<>();
+        for (String word : words) {
+            if (word.contains(" ")) {
+                this.words.put(word, Arrays.stream(word.split(" "))
+                        .map((streamWord) -> "*".repeat(streamWord.length()))
+                        .collect(Collectors.joining(" ")));
+            } else {
+                this.words.put(word, "*".repeat(word.length()));
             }
-        });
-        largestWordLength = longestWord.get();
+        }
     }
 
     /**
@@ -24,17 +30,32 @@ public class ProfanityFilter {
      */
 
     public String filter(String input) {
+        long nano = System.nanoTime();
         if (input == null || input.isEmpty() || input.isBlank()) return input;
-        // iterate over each letter in the word
-        for (int start = 0; start < input.length(); start++) {
-            // from each letter, keep going to find bad words until either the end of the sentence is reached, or the max word length is reached.
-            for (int offset = 1; offset < (input.length() + 1 - start) && offset < largestWordLength; offset++) {
-                String wordToCheck = input.substring(start, start + offset);
-                if (words.contains(wordToCheck)) {
-                    input = input.replaceAll(wordToCheck, "*".repeat(wordToCheck.length()));
+        for (String word : words.keySet()) {
+            if (word.contains(" ")) {
+                input = input.replaceAll("(?i)" + word, words.get(word));
+            } else {
+                String[] inputWords = input.split(" ");
+                boolean modified = false;
+                for (int i = 0; i < inputWords.length; i++) {
+                    if (inputWords[i].equalsIgnoreCase(word)) {
+                        inputWords[i] = words.get(word);
+                        modified = true;
+                    }
+                }
+                if (modified) {
+                    StringBuilder inputBuilder = new StringBuilder();
+                    for (String newWord : inputWords) inputBuilder.append(newWord).append(" ");
+                    input = inputBuilder.substring(0, inputBuilder.length() - 1);
                 }
             }
+//            if (input.startsWith(word + " ")) input = StringUtils.removeStart(word, "*".repeat(word.length()));
+//            input = input.replaceAll(" " + word + " ", " " + "*".repeat(word.length()) + " ");
+//            String end = " " + word;
+//            if (input.endsWith(end)) input = StringUtils.removeEnd(word, "*".repeat(word.length()));
         }
+        Bukkit.broadcastMessage("processing chat message took: " + (System.nanoTime() - nano) + " ns");
         return input;
 
     }
