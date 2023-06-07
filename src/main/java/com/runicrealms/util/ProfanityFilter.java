@@ -1,7 +1,5 @@
 package com.runicrealms.util;
 
-import org.bukkit.Bukkit;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +28,6 @@ public class ProfanityFilter {
      */
 
     public String filter(String input) {
-        long nano = System.nanoTime();
         if (input == null || input.isEmpty() || input.isBlank()) return input;
         for (String word : words.keySet()) {
             if (word.contains(" ")) {
@@ -55,7 +52,6 @@ public class ProfanityFilter {
 //            String end = " " + word;
 //            if (input.endsWith(end)) input = StringUtils.removeEnd(word, "*".repeat(word.length()));
         }
-        Bukkit.broadcastMessage("processing chat message took: " + (System.nanoTime() - nano) + " ns");
         return input;
 
     }
