@@ -21,7 +21,7 @@ public class Global extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&c[Global] &6%guild_prefix%%luckperms_meta_name_color%%player_name%: ";
+        return "&c[Global] &6%guild_prefix%%core_name_color%%player_name%: ";
     }
 
     @Override

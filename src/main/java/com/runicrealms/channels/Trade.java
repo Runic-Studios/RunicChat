@@ -16,7 +16,7 @@ public class Trade extends ChatChannel {
 
     @Override
     public String getPrefix() {
-        return "&3[Trade] &6%guild_prefix%%luckperms_meta_name_color%%player_name%: ";
+        return "&3[Trade] &6%guild_prefix%%core_name_color%%player_name%: ";
     }
 
     @Override
