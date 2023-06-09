@@ -54,7 +54,7 @@ public class Channel extends BaseCommand {
 
         String inputChannel = args[0].toLowerCase();
 
-        ChatChannel channel = runicChatAPI.getChatChannels().stream().filter(ch -> ch.getName().equalsIgnoreCase(inputChannel)).findFirst().orElseGet(null);
+        ChatChannel channel = runicChatAPI.getChatChannels().stream().filter(ch -> ch.getName().equalsIgnoreCase(inputChannel)).findFirst().orElse(null);
 
         if (channel != null) {
             player.sendMessage(ChatColor.DARK_GREEN + "Set your chat channel to '" + ChatColor.GREEN + channel.getName() + ChatColor.DARK_GREEN + "'");
