@@ -42,13 +42,19 @@ public class Global extends ChatChannel {
     @Override
     public TextComponent getTextComponent(Player player, String finalMessage) {
         TextComponent textComponent = new TextComponent(finalMessage);
+        String title = PlaceholderAPI.setPlaceholders(player, "%core_prefix%");
+        if (title.isEmpty()) title = "None";
+        String guildName = PlaceholderAPI.setPlaceholders(player, "%guild_name%");
+        if (guildName.isEmpty()) guildName = ChatColor.GRAY + "None";
+        String guildScore = PlaceholderAPI.setPlaceholders(player, "%guild_score%");
+        if (guildScore.isEmpty()) guildScore = ChatColor.GRAY + "None";
         textComponent.setHoverEvent(new HoverEvent
                 (
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(PlaceholderAPI.setPlaceholders(player,
-                                ChatColor.DARK_AQUA + "Title: " + ChatColor.AQUA + "%core_prefix%" +
-                                        ChatColor.GOLD + "\nGuild: %guild_name%" +
-                                        ChatColor.GOLD + "\nGuild Score: %guild_score%"
+                                ChatColor.DARK_AQUA + "Title: " + "%core_name_color%" + title +
+                                        ChatColor.GOLD + "\nGuild: " + guildName +
+                                        ChatColor.GOLD + "\nGuild Score: " + guildScore
                         ))
                 )
         );

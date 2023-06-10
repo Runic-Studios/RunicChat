@@ -53,11 +53,13 @@ public class Local extends ChatChannel {
     @Override
     public TextComponent getTextComponent(Player player, String finalMessage) {
         TextComponent textComponent = new TextComponent(finalMessage);
+        String title = PlaceholderAPI.setPlaceholders(player, "%core_prefix%");
+        if (title.isEmpty()) title = "None";
         textComponent.setHoverEvent(new HoverEvent
                 (
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(PlaceholderAPI.setPlaceholders(player,
-                                ChatColor.DARK_AQUA + "Title: " + ChatColor.AQUA + "%core_prefix%" +
+                                ChatColor.DARK_AQUA + "Title: " + "%core_name_color%" + title +
                                         ChatColor.GREEN + "\n%core_class% lv. %core_level%"
                         ))
                 )
