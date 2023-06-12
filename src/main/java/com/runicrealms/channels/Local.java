@@ -2,6 +2,7 @@ package com.runicrealms.channels;
 
 import co.aikar.commands.ACFBukkitUtil;
 import com.runicrealms.api.chat.ChatChannel;
+import com.runicrealms.plugin.common.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -59,7 +60,7 @@ public class Local extends ChatChannel {
                 (
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(PlaceholderAPI.setPlaceholders(player,
-                                ChatColor.DARK_AQUA + "Title: " + "%core_name_color%" + title +
+                                ChatColor.DARK_AQUA + "Title: " + ColorUtil.format("%core_name_color%") + title +
                                         ChatColor.GREEN + "\n%core_class% lv. %core_level%"
                         ))
                 )

@@ -16,6 +16,7 @@ dependencies {
     compileOnly(commonLibs.acf)
     compileOnly(commonLibs.placeholderapi)
     compileOnly(commonLibs.configme)
+    compileOnly(project(":Projects:Common"))
 }
 
 java {

@@ -1,6 +1,7 @@
 package com.runicrealms.channels;
 
 import com.runicrealms.api.chat.ChatChannel;
+import com.runicrealms.plugin.common.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -52,7 +53,7 @@ public class Global extends ChatChannel {
                 (
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(PlaceholderAPI.setPlaceholders(player,
-                                ChatColor.DARK_AQUA + "Title: " + "%core_name_color%" + title +
+                                ChatColor.DARK_AQUA + "Title: " + ColorUtil.format("%core_name_color%") + title +
                                         ChatColor.GOLD + "\nGuild: " + guildName +
                                         ChatColor.GOLD + "\nGuild Score: " + guildScore
                         ))
