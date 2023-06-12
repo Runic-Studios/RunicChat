@@ -13,11 +13,6 @@ import java.util.Collection;
 public abstract class ChatChannel {
 
     /**
-     * @return Channel Prefix
-     */
-    public abstract String getPrefix();
-
-    /**
      * @return Channel Name
      */
     public abstract String getName();
@@ -31,18 +26,40 @@ public abstract class ChatChannel {
     public abstract Collection<Player> getRecipients(Player player);
 
     /**
-     * Decorates the message with titles, permission colors, etc.
+     * A TextComponent that is used as a wrapper on the message to add hover and click logic
      *
-     * @return a String representing the presentation of the message
+     * @param sender  who sent the message
+     * @param message message to be sent
+     * @return a TextComponent that can include hover or click events
      */
-    public abstract String getMessageFormat();
+    public abstract TextComponent createMessage(Player sender, String message);
 
     /**
      * A TextComponent that is used as a wrapper on the message to add hover and click logic
      *
-     * @param sender       who sent the message
-     * @param finalMessage the final message that will be sent in chat (after any logic)
+     * @param sender  who sent the message
+     * @param spy     person spying on this message
+     * @param message message to be sent
      * @return a TextComponent that can include hover or click events
      */
-    public abstract TextComponent getTextComponent(Player sender, String finalMessage);
+    public TextComponent createSpyMessage(Player sender, Player spy, String message) {
+        return createMessage(sender, message);
+    }
+
+    /**
+     * Gets if a staff member can spy on this channel
+     */
+    public abstract boolean isSpyable();
+
+    /**
+     * Gets whether spy should be able to see this message.
+     * This only ever returns false if the message is not going to be delivered.
+     */
+    public boolean canSpy(Player sender, Player spy) {
+        return true;
+    }
+
+    public boolean canAccess(Player player) {
+        return true;
+    }
 }

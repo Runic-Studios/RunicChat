@@ -7,6 +7,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * An ASYNC event to send chat messages
@@ -15,11 +16,12 @@ import java.util.Collection;
  * Time: 8:37 PM
  */
 public class ChatChannelMessageEvent extends Event implements Cancellable {
+    private static final HandlerList HANDLERS_LIST = new HandlerList();
     private final Player messageSender;
     private final ChatChannel chatChannel;
     private final Collection<Player> recipients;
+    private final Collection<Player> spies = new HashSet<>();
     private final String chatMessage;
-    private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
     public ChatChannelMessageEvent(final Player messageSender, ChatChannel chatChannel, Collection<Player> recipients, String chatMessage) {
@@ -28,6 +30,10 @@ public class ChatChannelMessageEvent extends Event implements Cancellable {
         this.chatChannel = chatChannel;
         this.recipients = recipients;
         this.chatMessage = chatMessage;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS_LIST;
     }
 
     public Player getMessageSender() {
@@ -40,6 +46,10 @@ public class ChatChannelMessageEvent extends Event implements Cancellable {
 
     public Collection<Player> getRecipients() {
         return this.recipients;
+    }
+
+    public Collection<Player> getSpies() {
+        return this.spies;
     }
 
     public String getChatMessage() {
@@ -58,10 +68,6 @@ public class ChatChannelMessageEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return HANDLERS_LIST;
-    }
-
-    public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 }

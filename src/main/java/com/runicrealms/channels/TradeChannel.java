@@ -16,11 +16,6 @@ import java.util.List;
 public class TradeChannel extends ChatChannel {
 
     @Override
-    public String getPrefix() {
-        return "&3[Trade] &6%guild_prefix%%core_name_color%%player_name%: ";
-    }
-
-    @Override
     public String getName() {
         return "trade";
     }
@@ -31,13 +26,8 @@ public class TradeChannel extends ChatChannel {
     }
 
     @Override
-    public String getMessageFormat() {
-        return "&f%message%";
-    }
-
-    @Override
-    public TextComponent getTextComponent(Player player, String finalMessage) {
-        TextComponent textComponent = new TextComponent(finalMessage);
+    public TextComponent createMessage(Player player, String message) {
+        TextComponent textComponent = new TextComponent(ColorUtil.format(PlaceholderAPI.setPlaceholders(player, "&3[Trade] &6%guild_prefix%%core_name_color%%player_name%: &f")) + message);
         String title = PlaceholderAPI.setPlaceholders(player, "%core_prefix%");
         if (title.isEmpty()) title = "None";
         String guildName = PlaceholderAPI.setPlaceholders(player, "%guild_name%");
@@ -56,6 +46,11 @@ public class TradeChannel extends ChatChannel {
                 )
         );
         return textComponent;
+    }
+
+    @Override
+    public boolean isSpyable() {
+        return false;
     }
 
 }

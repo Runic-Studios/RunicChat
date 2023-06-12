@@ -22,11 +22,6 @@ import java.util.List;
 public class LocalChannel extends ChatChannel {
 
     @Override
-    public String getPrefix() {
-        return "&e[Local] &3%core_prefix_formatted%&r%core_name_color%%player_name%: ";
-    }
-
-    @Override
     public String getName() {
         return "local";
     }
@@ -47,13 +42,18 @@ public class LocalChannel extends ChatChannel {
     }
 
     @Override
-    public String getMessageFormat() {
-        return "&f%message%";
+    public TextComponent createMessage(Player player, String message) {
+        return createMessage(player, message, false);
+
     }
 
     @Override
-    public TextComponent getTextComponent(Player player, String finalMessage) {
-        TextComponent textComponent = new TextComponent(finalMessage);
+    public TextComponent createSpyMessage(Player player, Player spy, String message) {
+        return createMessage(player, message, true);
+    }
+
+    private TextComponent createMessage(Player player, String message, boolean spy) {
+        TextComponent textComponent = new TextComponent(ColorUtil.format(PlaceholderAPI.setPlaceholders(player, "&e[Local" + (spy ? " Spy" : "") + "] &3%core_prefix_formatted%&r%core_name_color%%player_name%: &f")) + message);
         String title = PlaceholderAPI.setPlaceholders(player, "%core_prefix%");
         if (title.isEmpty()) title = "None";
         String titleColor = ColorUtil.format(PlaceholderAPI.setPlaceholders(player, "%core_name_color%"));
@@ -62,10 +62,15 @@ public class LocalChannel extends ChatChannel {
                         HoverEvent.Action.SHOW_TEXT,
                         new Text(
                                 ChatColor.DARK_AQUA + "Title: " + titleColor + title +
-                                        ChatColor.GREEN + "\n%core_class% lv. %core_level%"
+                                        ChatColor.GREEN + PlaceholderAPI.setPlaceholders(player, "\n%core_class% lv. %core_level%")
                         )
                 )
         );
         return textComponent;
+    }
+
+    @Override
+    public boolean isSpyable() {
+        return true;
     }
 }

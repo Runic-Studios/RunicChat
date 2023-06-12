@@ -1,9 +1,7 @@
 package com.runicrealms.listener;
 
 import com.runicrealms.RunicChat;
-import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.api.event.ChatChannelMessageEvent;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,9 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by KissOfFate
@@ -29,41 +25,49 @@ public class PlayerMessageListener implements Listener {
         if (event.isCancelled()) return;
         event.setCancelled(true);
 
-        ChatChannel channel = RunicChat.getRunicChatAPI().getPlayerChatChannel(event.getPlayer());
-        Collection<Player> recipients = channel.getRecipients(event.getPlayer());
-
-        ChatChannelMessageEvent chatChannelMessageEvent = new ChatChannelMessageEvent(event.getPlayer(), channel, recipients, event.getMessage());
-        Bukkit.getPluginManager().callEvent(chatChannelMessageEvent);
+        RunicChat.getRunicChatAPI().sendMessage(event.getPlayer(), event.getMessage());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChatChannelMessageSpies(ChatChannelMessageEvent event) {
+        for (UUID target : RunicChat.getRunicChatAPI().getSpyingPlayers()) {
+            Player player = Bukkit.getPlayer(target);
+            if (player == null) continue;
+            if (RunicChat.getRunicChatAPI().isSpyingOnChannel(player, event.getChatChannel())) {
+                if (!event.getRecipients().contains(player)) event.getSpies().add(player);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChatChannelMessage(ChatChannelMessageEvent event) {
+        if (event.isCancelled()) return;
+
         if (RunicChat.getRunicChatAPI().getMutes().contains(event.getMessageSender().getUniqueId())) {
             event.setCancelled(true);
             event.getMessageSender().sendMessage(ChatColor.RED + "You are muted!");
             return;
         }
 
-        String prefix = ChatColor.translateAlternateColorCodes('&',
-                PlaceholderAPI.setPlaceholders
-                        (
-                                event.getMessageSender(),
-                                event.getChatChannel().getPrefix()
-                        ));
+        if (RunicChat.getRunicChatAPI().isChannelMuted(event.getMessageSender(), event.getChatChannel())) {
+            event.setCancelled(true);
+            event.getMessageSender().sendMessage(ChatColor.RED + "You cannot send messages to a channel you have muted!");
+            return;
+        }
 
-        List<TextComponent> componentList = new ArrayList<>();
-        componentList.add(event.getChatChannel().getTextComponent(event.getMessageSender(), prefix));
-        componentList.addAll(RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(),
-                event.getChatMessage()));
+        event.getRecipients().forEach(player -> {
+            if (!RunicChat.getRunicChatAPI().isChannelMuted(player, event.getChatChannel())) {
+                TextComponent textComponent = event.getChatChannel().createMessage(event.getMessageSender(), event.getChatMessage());
+                player.spigot().sendMessage(RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(), textComponent).toArray(new TextComponent[0]));
+            }
+        });
 
-        if (event.isCancelled()) return;
-        event.getRecipients().forEach
-                (
-                        player -> player.spigot().sendMessage
-                                (
-                                        componentList.toArray(new TextComponent[0])
-                                )
-                );
+        for (Player spy : event.getSpies()) {
+            if (event.getChatChannel().canSpy(event.getMessageSender(), spy) && !event.getRecipients().contains(spy)) {
+                TextComponent textComponent = event.getChatChannel().createSpyMessage(event.getMessageSender(), spy, event.getChatMessage());
+                spy.spigot().sendMessage(RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(), textComponent).toArray(new TextComponent[0]));
+            }
+        }
     }
 
 

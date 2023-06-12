@@ -16,30 +16,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Created by KissOfFate
- * Date: 5/10/2020
- * Time: 8:28 PM
- */
-@CommandAlias("mute")
-public class Mute extends BaseCommand {
+@CommandAlias("unmute")
+public class UnmuteCommand extends BaseCommand {
 
-    public Mute() {
-        RunicChat.getCommandManager().getCommandCompletions().registerCompletion("unmuted-players", (context) ->
-                Bukkit.getOnlinePlayers().stream()
-                        .filter((player) -> !RunicChat.getRunicChatAPI().getMutes().contains(player.getUniqueId()))
+    public UnmuteCommand() {
+        RunicChat.getCommandManager().getCommandCompletions().registerCompletion("muted-players", (context) ->
+                RunicChat.getRunicChatAPI().getMutes().stream()
+                        .map(Bukkit::getPlayer)
+                        .filter(Objects::nonNull)
                         .map(HumanEntity::getName)
                         .collect(Collectors.toList()));
     }
 
     @Default
-    @CommandPermission("runicchat.mute")
-    @Syntax("<player> <minutes>")
-    @CommandCompletion("@unmuted-players @range:1-60")
-    public void execute(CommandSender sender, @Single String targetName, int time) {
+    @CommandPermission("runicchat.unmute")
+    @Syntax("<player>")
+    @CommandCompletion("@muted-players")
+    public void execute(CommandSender sender, @Single String targetName) {
         if (targetName.isEmpty()) {
             sender.sendMessage(ChatColor.RED + "Player not found!");
             return;
@@ -55,24 +52,16 @@ public class Mute extends BaseCommand {
         UUID targetUUID = target.getUniqueId();
 
         if (RunicChat.getRunicChatAPI().getMutes().stream().anyMatch((uuid) -> uuid.equals(target.getUniqueId()))) {
-            // player is already muted, reset the timer
+            RunicChat.getRunicChatAPI().mute(targetUUID, false);
             Map<UUID, BukkitTask> unmuteTasks = RunicChat.getRunicChatAPI().getUnmuteTasks();
+            target.sendMessage(ChatColor.GREEN + "You have been un-muted!");
             if (unmuteTasks.containsKey(targetUUID)) {
                 unmuteTasks.get(targetUUID).cancel();
                 unmuteTasks.remove(targetUUID);
             }
-            sender.sendMessage(ChatColor.GREEN + "Muted " + targetName + " again for " + time + " minutes!");
+            sender.sendMessage(ChatColor.GREEN + "Unmuted " + targetName);
         } else {
-            // Mute the target
-            RunicChat.getRunicChatAPI().mute(targetUUID, true);
-            target.sendMessage(ChatColor.RED + "You have been muted for " + time + " minutes!");
-            sender.sendMessage(ChatColor.GREEN + "Muted " + targetName + " for " + time + " minutes!");
+            sender.sendMessage(ChatColor.RED + targetName + " is not muted!");
         }
-        RunicChat.getRunicChatAPI().getUnmuteTasks().put(target.getUniqueId(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(RunicChat.getPlugin(RunicChat.class), () -> {
-            RunicChat.getRunicChatAPI().mute(targetUUID, false);
-            Player player = Bukkit.getPlayer(targetUUID);
-            if (player != null) player.sendMessage(ChatColor.GREEN + "You have been un-muted!");
-        }, 20 * (60L * time)));
     }
-
 }

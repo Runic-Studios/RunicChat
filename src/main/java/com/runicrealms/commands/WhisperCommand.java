@@ -23,12 +23,13 @@ import java.util.Set;
  * Time: 8:11 PM
  */
 @CommandAlias("whisper|w|msg|message|dm")
-public class Whisper extends BaseCommand {
+@CommandPermission("runicchat.message")
+public class WhisperCommand extends BaseCommand {
 
     @Dependency
     private RunicChatAPI runicChatAPI;
 
-    public Whisper() {
+    public WhisperCommand() {
         RunicChat.getCommandManager().getCommandCompletions().registerAsyncCompletion("online", context -> {
             Set<String> players = new HashSet<>();
             for (Player player : Bukkit.getOnlinePlayers())
@@ -39,7 +40,6 @@ public class Whisper extends BaseCommand {
 
     @Default
     @CommandCompletion("@online")
-    @CommandPermission("runicchat.message")
     @Syntax("<player> [message]")
     public void execute(Player sender, @Single String targetName, String message) {
         if (targetName.isEmpty()) {
@@ -59,33 +59,7 @@ public class Whisper extends BaseCommand {
             return;
         }
 
-        boolean color = sender.hasPermission("runicchat.color");
-
-        sender.sendMessage(
-                ChatColor.translateAlternateColorCodes('&',
-                        "&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o" + message));
-        target.sendMessage(
-                ChatColor.translateAlternateColorCodes('&',
-                        "&r&o" + sender.getName() + "&9&o whispers to you: &7&o" + message));
-        if (color) {
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.hasPermission("runicchat.spy")) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&c[SPY]&8[&b" + sender.getName() + " &7-> &a" + target.getName() + "&8] " + message));
-                }
-            }
-
-        } else {
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.hasPermission("runicchat.spy")) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&c[SPY]&8[&b" + sender.getName() + " &7-> &a" + target.getName() + "&8] ") + message);
-                }
-            }
-        }
-
-
+        RunicChat.getRunicChatAPI().sendWhisper(sender, target, message);
     }
+
 }
