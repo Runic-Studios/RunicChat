@@ -325,11 +325,12 @@ public class ChatManager implements RunicChatAPI, Listener {
     @Override
     public void sendWhisper(Player sender, Player target, String message) {
         setWhisperTarget(sender, target);
+        setWhisperTarget(target, sender);
 
         List<TextComponent> parsed = parseMessage(sender, new TextComponent(message));
 
         List<TextComponent> components = new ArrayList<>();
-        components.add(new TextComponent(ColorUtil.format("&9&oYou whisper to &r&o" + target.getName() + "&9&o: &7&o")));
+        components.add(new TextComponent(ColorUtil.format("&9&oYou whisper to " + PlaceholderAPI.setPlaceholders(target, "%core_name_color%") + "&o" + target.getName() + "&9&o: &7&o")));
         components.addAll(parsed);
         sender.sendMessage(components.toArray(new TextComponent[0]));
 
@@ -347,8 +348,8 @@ public class ChatManager implements RunicChatAPI, Listener {
             if (player.hasPermission("runicchat.spy")) {
                 components.clear();
                 components.add(new TextComponent(ColorUtil.format(
-                        "&cSpy: " + PlaceholderAPI.setPlaceholders(sender, "%core_name_color%") + "&o" + sender.getName() +
-                                " &f&o-> " + PlaceholderAPI.setPlaceholders(target, "%core_name_color%") + "&o" + target.getName() + " &f") + message));
+                        "&4Spy: " + PlaceholderAPI.setPlaceholders(sender, "%core_name_color%") + "&o" + sender.getName() +
+                                " &f&o-> " + PlaceholderAPI.setPlaceholders(target, "%core_name_color%") + "&o" + target.getName() + ": &f")));
                 components.addAll(parsed);
                 player.sendMessage(components.toArray(new TextComponent[0]));
             }
