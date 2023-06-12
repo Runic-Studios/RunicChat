@@ -9,7 +9,7 @@ import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import org.bukkit.entity.Player;
 
-@CommandAlias("staff|s")
+@CommandAlias("staff|s|sc")
 @CommandPermission("runicchat.staff")
 public class StaffChannelCommand extends BaseCommand {
 

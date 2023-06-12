@@ -9,7 +9,7 @@ import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import org.bukkit.entity.Player;
 
-@CommandAlias("global|g")
+@CommandAlias("global|gl")
 @CommandPermission("runicchat.channel")
 public class GlobalChannelCommand extends BaseCommand {
 

@@ -9,7 +9,7 @@ import com.runicrealms.RunicChat;
 import com.runicrealms.api.chat.ChatChannel;
 import org.bukkit.entity.Player;
 
-@CommandAlias("trade|t")
+@CommandAlias("trade|t|tr")
 @CommandPermission("runicchat.channel")
 public class TradeChannelCommand extends BaseCommand {
 
