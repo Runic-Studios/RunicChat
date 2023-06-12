@@ -2,9 +2,9 @@ package com.runicrealms;
 
 import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.api.RunicChatAPI;
-import com.runicrealms.channels.Global;
-import com.runicrealms.channels.Local;
-import com.runicrealms.channels.Trade;
+import com.runicrealms.channels.GlobalChannel;
+import com.runicrealms.channels.LocalChannel;
+import com.runicrealms.channels.TradeChannel;
 import com.runicrealms.commands.Channel;
 import com.runicrealms.commands.Mute;
 import com.runicrealms.commands.Unmute;
@@ -60,9 +60,9 @@ public class RunicChat extends JavaPlugin {
         commandManager.registerDependency(RunicChatAPI.class, runicChatAPI);
 
         // Register Chat Channels
-        runicChatAPI.registerChatChannel(new Global());
-        runicChatAPI.registerChatChannel(new Local());
-        runicChatAPI.registerChatChannel(new Trade());
+        runicChatAPI.registerChatChannel(new GlobalChannel());
+        runicChatAPI.registerChatChannel(new LocalChannel());
+        runicChatAPI.registerChatChannel(new TradeChannel());
 
         // Register Commands
         commandManager.registerCommand(new Channel());

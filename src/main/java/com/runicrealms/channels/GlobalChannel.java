@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 5/9/2020
  * Time: 4:09 PM
  */
-public class Global extends ChatChannel {
+public class GlobalChannel extends ChatChannel {
 
     @Override
     public String getPrefix() {
@@ -49,14 +49,15 @@ public class Global extends ChatChannel {
         if (guildName.isEmpty()) guildName = ChatColor.GRAY + "None";
         String guildScore = PlaceholderAPI.setPlaceholders(player, "%guild_score%");
         if (guildScore.isEmpty()) guildScore = ChatColor.GRAY + "None";
+        String titleColor = ColorUtil.format(PlaceholderAPI.setPlaceholders(player, "%core_name_color%"));
         textComponent.setHoverEvent(new HoverEvent
                 (
                         HoverEvent.Action.SHOW_TEXT,
-                        new Text(PlaceholderAPI.setPlaceholders(player,
-                                ChatColor.DARK_AQUA + "Title: " + ColorUtil.format("%core_name_color%") + title +
+                        new Text(
+                                ChatColor.DARK_AQUA + "Title: " + titleColor + title +
                                         ChatColor.GOLD + "\nGuild: " + guildName +
                                         ChatColor.GOLD + "\nGuild Score: " + guildScore
-                        ))
+                        )
                 )
         );
         return textComponent;
