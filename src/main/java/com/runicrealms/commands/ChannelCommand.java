@@ -34,7 +34,7 @@ public class ChannelCommand extends BaseCommand {
         RunicChat.getCommandManager().getCommandCompletions().registerAsyncCompletion("channels", context -> {
             Set<String> channels = new HashSet<>();
             for (ChatChannel channel : runicChatAPI.getChatChannels())
-                channels.add(channel.getName());
+                if (channel.canAccess(context.getPlayer())) channels.add(channel.getName());
             return channels;
         });
     }
