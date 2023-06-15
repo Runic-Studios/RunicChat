@@ -11,7 +11,7 @@ import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.channels.GlobalChannel;
 import com.runicrealms.channels.StaffChannel;
 import com.runicrealms.channels.TradeChannel;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

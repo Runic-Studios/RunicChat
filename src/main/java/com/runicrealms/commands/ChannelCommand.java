@@ -11,7 +11,7 @@ import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.RunicChat;
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.api.chat.ChatChannel;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
