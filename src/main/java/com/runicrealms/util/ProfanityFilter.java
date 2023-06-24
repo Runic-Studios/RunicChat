@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ProfanityFilter {
 
     private final Map<String, String> words;
@@ -26,7 +27,6 @@ public class ProfanityFilter {
     /**
      * Iterates over a String input and checks whether a cuss word was found in a list, then checks if the word should be ignored (e.g. bass contains the word *ss).
      */
-
     public String filter(String input) {
         if (input == null || input.isEmpty() || input.isBlank()) return input;
         for (String word : words.keySet()) {

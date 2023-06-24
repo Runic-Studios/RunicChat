@@ -5,7 +5,7 @@ import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.api.event.ChatChannelMessageEvent;
 import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.common.util.ColorUtil;
-import com.runicrealms.util.ProfanityFilter;
+import com.runicrealms.filter.ProfanityFilter;
 import com.runicrealms.util.ReflectionUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -100,7 +100,9 @@ public class ChatManager implements RunicChatAPI, Listener {
         String text = message.getText();
         if (sender.hasPermission("runicchat.color")) text = ColorUtil.format(text);
         text = replaceCoordsWithPlayerLocation(sender, text);
-        text = getProfanityFilter().filter(text);
+        //text = getProfanityFilter().filter(text);
+        text = filter.filterBadWords(text);
+
         message.setText(text);
         if (text.toLowerCase().contains("[item]")) {
             return getItemHoverText(sender, message);

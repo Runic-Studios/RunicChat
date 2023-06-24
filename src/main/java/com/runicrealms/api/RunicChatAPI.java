@@ -1,7 +1,7 @@
 package com.runicrealms.api;
 
 import com.runicrealms.api.chat.ChatChannel;
-import com.runicrealms.util.ProfanityFilter;
+import com.runicrealms.filter.ProfanityFilter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
