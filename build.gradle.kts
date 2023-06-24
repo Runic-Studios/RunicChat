@@ -16,6 +16,7 @@ dependencies {
     compileOnly(commonLibs.acf)
     compileOnly(commonLibs.placeholderapi)
     compileOnly(commonLibs.configme)
+    compileOnly(commonLibs.apachecommonslang)
     compileOnly(project(":Projects:Common"))
 }
 
