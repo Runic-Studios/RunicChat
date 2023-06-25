@@ -3,9 +3,9 @@ package com.runicrealms;
 import com.runicrealms.api.RunicChatAPI;
 import com.runicrealms.api.chat.ChatChannel;
 import com.runicrealms.api.event.ChatChannelMessageEvent;
+import com.runicrealms.filter.ProfanityFilter;
 import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.common.util.ColorUtil;
-import com.runicrealms.filter.ProfanityFilter;
 import com.runicrealms.util.ReflectionUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
@@ -57,6 +58,7 @@ public class ChatManager implements RunicChatAPI, Listener {
     private final Map<UUID, Map<ChatChannel, Boolean>> channelsEnabled = new ConcurrentHashMap<>();
 
     private final Map<UUID, UUID> whisperTargets = new HashMap<>();
+    private final Map<UUID, Set<UUID>> whisperSpys = new HashMap<>();
 
     private static String replaceCoordsWithPlayerLocation(Player player, String message) {
         // Get player's location and format it as a string
@@ -345,9 +347,13 @@ public class ChatManager implements RunicChatAPI, Listener {
         target.sendMessage(components.toArray(new TextComponent[0]));
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getUniqueId().equals(sender.getUniqueId()) || player.getUniqueId().equals(target.getUniqueId()))
+            if (player.getUniqueId().equals(sender.getUniqueId()) || player.getUniqueId().equals(target.getUniqueId())) {
                 continue;
-            if (player.hasPermission("runicchat.spy")) {
+            }
+
+            Set<UUID> uuids = this.whisperSpys.get(player.getUniqueId());
+
+            if (player.hasPermission("runicchat.spy") || (uuids != null && (uuids.contains(sender.getUniqueId()) || uuids.contains(target.getUniqueId())))) {
                 components.clear();
                 components.add(new TextComponent(ColorUtil.format(
                         "&4Spy: " + PlaceholderAPI.setPlaceholders(sender, "%core_name_color%") + "&o" + sender.getName() +
@@ -355,6 +361,17 @@ public class ChatManager implements RunicChatAPI, Listener {
                 components.addAll(parsed);
                 player.sendMessage(components.toArray(new TextComponent[0]));
             }
+        }
+    }
+
+    @Override
+    public void setWhisperSpy(@NotNull Player spy, @NotNull Player target, boolean enabled) {
+        this.whisperSpys.computeIfAbsent(spy.getUniqueId(), key -> new HashSet<>());
+
+        if (enabled) {
+            this.whisperSpys.get(spy.getUniqueId()).add(target.getUniqueId());
+        } else {
+            this.whisperSpys.remove(spy.getUniqueId()).remove(target.getUniqueId());
         }
     }
 

@@ -17,11 +17,11 @@ import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
 
-@CommandAlias("spy")
+@CommandAlias("chatspy")
 @CommandPermission("runicchat.spy")
-public class SpyCommand extends BaseCommand {
+public class ChatSpyCommand extends BaseCommand {
 
-    public SpyCommand() {
+    public ChatSpyCommand() {
         RunicChat.getCommandManager().getCommandCompletions().registerAsyncCompletion("spyable-channels", context ->
                 RunicChat.getRunicChatAPI().getChatChannels().stream().filter(ChatChannel::isSpyable).map(ChatChannel::getName).collect(Collectors.toList())
         );

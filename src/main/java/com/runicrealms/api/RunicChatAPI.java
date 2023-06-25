@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -147,4 +148,12 @@ public interface RunicChatAPI {
      */
     void sendWhisper(Player sender, Player target, String message);
 
+    /**
+     * A method used to set if the spy user is able to view private messages sent to the target player
+     *
+     * @param spy     the player who is spying
+     * @param target  the players whose private messages should be seen
+     * @param enabled if this spy feature should be enabled or disabled
+     */
+    void setWhisperSpy(@NotNull Player spy, @NotNull Player target, boolean enabled);
 }

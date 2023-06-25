@@ -7,9 +7,9 @@ import com.runicrealms.channels.LocalChannel;
 import com.runicrealms.channels.StaffChannel;
 import com.runicrealms.channels.TradeChannel;
 import com.runicrealms.commands.ChannelCommand;
+import com.runicrealms.commands.ChatSpyCommand;
 import com.runicrealms.commands.MuteCommand;
 import com.runicrealms.commands.ReplyCommand;
-import com.runicrealms.commands.SpyCommand;
 import com.runicrealms.commands.UnmuteCommand;
 import com.runicrealms.commands.WhisperCommand;
 import com.runicrealms.commands.channels.GlobalChannelCommand;
@@ -86,7 +86,7 @@ public class RunicChat extends JavaPlugin {
         runicChatAPI.registerChatChannel(tradeChannel);
 
         // Register Commands
-        commandManager.registerCommand(new SpyCommand());
+        commandManager.registerCommand(new ChatSpyCommand());
         commandManager.registerCommand(new ChannelCommand());
         commandManager.registerCommand(new WhisperCommand());
         commandManager.registerCommand(new MuteCommand());
