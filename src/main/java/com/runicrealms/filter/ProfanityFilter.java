@@ -1,8 +1,5 @@
 package com.runicrealms.filter;
 
-import com.runicrealms.RunicChat;
-
-import java.io.*;
 import java.util.Set;
 
 public class ProfanityFilter {
@@ -21,17 +18,15 @@ public class ProfanityFilter {
      * Setup a tree for profanity filter
      */
     public static void buildDictionaryTree(Set<String> words) {
-        for(String line : words) {
+        for (String line : words) {
             addToTree(line, 0, root);
         }
     }
 
     /**
      * @param badWordLine
-     * @param characterIndex
-     *            : index of each letter in a bad word
-     * @param node
-     *            that iterates through the tree
+     * @param characterIndex : index of each letter in a bad word
+     * @param node           that iterates through the tree
      */
     private static void addToTree(String badWordLine, int characterIndex, TreeNode node) {
         if (characterIndex < badWordLine.length()) {
