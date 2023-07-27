@@ -1,6 +1,6 @@
 name: RunicChat
 version: ${project.version}
-main: com.runicrealms.RunicChat
+main: com.runicrealms.plugin.chat.RunicChat
 api-version: 1.13
 authors: [ RunicStudios ]
 softdepend: [ PlaceholderAPI ]
