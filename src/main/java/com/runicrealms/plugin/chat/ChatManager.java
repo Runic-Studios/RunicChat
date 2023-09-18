@@ -2,11 +2,10 @@ package com.runicrealms.plugin.chat;
 
 import com.runicrealms.plugin.chat.api.RunicChatAPI;
 import com.runicrealms.plugin.chat.api.chat.ChatChannel;
-import com.runicrealms.plugin.chat.filter.ProfanityFilter;
 import com.runicrealms.plugin.chat.api.event.ChatChannelMessageEvent;
+import com.runicrealms.plugin.chat.filter.ProfanityFilter;
 import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.common.util.ColorUtil;
-import com.runicrealms.plugin.chat.util.ReflectionUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -36,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 /**
  * Created by KissOfFate
@@ -71,30 +69,34 @@ public class ChatManager implements RunicChatAPI, Listener {
     @SuppressWarnings("deprecation")
     @Override
     public String convertItemStackToJson(ItemStack itemStack) {
-        // ItemStack methods to get a net.minecraft.server.ItemStack object for serialization
-        Class<?> craftItemStackClazz = ReflectionUtil.getOBCClass("inventory.CraftItemStack");
-        Method asNMSCopyMethod = ReflectionUtil.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
-
-        // NMS Method to serialize a net.minecraft.server.ItemStack to a valid Json string
-        Class<?> nmsItemStackClazz = ReflectionUtil.getNMSClass("ItemStack");
-        Class<?> nbtTagCompoundClazz = ReflectionUtil.getNMSClass("NBTTagCompound");
-        Method saveNmsItemStackMethod = ReflectionUtil.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
-
-        Object nmsNbtTagCompoundObj; // This will just be an empty NBTTagCompound instance to invoke the saveNms method
-        Object nmsItemStackObj; // This is the net.minecraft.server.ItemStack object received from the asNMSCopy method
-        Object itemAsJsonObject; // This is the net.minecraft.server.ItemStack after being put through saveNmsItem method
-
         try {
-            nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-            nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
-            itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
-        } catch (Throwable t) {
-            Bukkit.getLogger().log(Level.SEVERE, "failed to serialize ItemStack to nms item", t);
-            return null;
-        }
+            Class<?> nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
+            Object emptyTag = nbtTagCompoundClass.getConstructor().newInstance();
 
-        // Return a string representation of the serialized object
-        return itemAsJsonObject.toString();
+            Object nmsStack = itemStack.getClass().getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
+
+            Method saveMethod = null;
+
+            for (Method method : nmsStack.getClass().getMethods()) {
+                if (method.getReturnType().equals(nbtTagCompoundClass) && method.getParameterCount() == 1
+                        && method.getParameterTypes()[0].equals(nbtTagCompoundClass)) {
+                    // THIS IS THE SAVE METHOD
+                    saveMethod = method;
+                    break;
+                }
+            }
+
+            if (saveMethod != null) {
+                return saveMethod.invoke(nmsStack, emptyTag).toString();
+            } else {
+                // method not found!! something changed with new mc version
+                return "";
+            }
+        } catch (Exception e) {
+            // could not get item json
+            e.printStackTrace();
+            return "";
+        }
     }
 
     @Override
@@ -111,56 +113,6 @@ public class ChatManager implements RunicChatAPI, Listener {
         }
         return Collections.singletonList(message);
     }
-
-//        String finalMessage =
-//                sender.hasPermission("runicchat.color")
-//                        ?
-//                        ChatColor.translateAlternateColorCodes('&', message)
-//                        :
-//                        message;
-//        finalMessage = getProfanityFilter().filter(finalMessage);
-//        List<TextComponent> textComponentList = new ArrayList<>();
-//        // Handle [coords]
-//        finalMessage = replaceCoordsWithPlayerLocation(sender, finalMessage);
-//        // Handle [Item] hover
-//        if (finalMessage.toLowerCase().contains("[item]")) {
-//            return itemHoverComponentList(sender, finalMessage);
-//        }
-//        textComponentList.add(new TextComponent(finalMessage));
-//        return textComponentList;
-//    }
-
-//    @SuppressWarnings("deprecation")
-//    @Override
-//    public List<TextComponent> itemHoverComponentList(Player sender, String message) {
-//        List<TextComponent> textComponentList = new ArrayList<>();
-//        String[] array = message.split("\\[item]");
-//        ItemStack heldItem = sender.getInventory().getItemInMainHand();
-//        String itemName;
-//        if (heldItem.getItemMeta() != null) {
-//            itemName =
-//                    ChatColor.GREEN + "[" + heldItem.getItemMeta().getDisplayName() + ChatColor.GREEN + "]";
-//        } else {
-//            itemName = ChatColor.GREEN + "[Item]";
-//        }
-//        TextComponent item = new TextComponent(itemName + ChatColor.RESET);
-//        String itemJson = convertItemStackToJson(heldItem);
-//        BaseComponent[] hoverEventComponents = new BaseComponent[]{
-//                new TextComponent(itemJson)
-//        };
-//        item.setHoverEvent(new HoverEvent(
-//                HoverEvent.Action.SHOW_ITEM,
-//                hoverEventComponents
-//        ));
-//        if (array.length > 0) {
-//            textComponentList.add(new TextComponent(array[0]));
-//        }
-//        textComponentList.add(item);
-//        if (array.length > 1) {
-//            textComponentList.add(new TextComponent(array[1]));
-//        }
-//        return textComponentList;
-//    }
 
     public List<TextComponent> getItemHoverText(Player player, TextComponent... components) {
         ArrayList<TextComponent> newComponents = new ArrayList<>();
