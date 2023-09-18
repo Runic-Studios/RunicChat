@@ -1,7 +1,8 @@
 name: RunicChat
 version: ${project.version}
-main: com.runicrealms.RunicChat
-authors: [ OhCreative ]
+main: com.runicrealms.plugin.chat.RunicChat
+api-version: 1.13
+authors: [ RunicStudios ]
 softdepend: [ PlaceholderAPI ]
 depend: [ RunicCommon ]
 description: Chat Plugin for Runic Realms
