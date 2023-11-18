@@ -68,8 +68,6 @@ public class PlayerMessageListener implements Listener {
                 spy.spigot().sendMessage(RunicChat.getRunicChatAPI().parseMessage(event.getMessageSender(), textComponent).toArray(new TextComponent[0]));
             }
         }
-
-        RunicChat.getInstance().getLogger().info(event.getMessageSender().getName() + ": " + event.getChatMessage());
     }
 
 
