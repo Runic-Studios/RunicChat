@@ -329,7 +329,7 @@ public class ChatManager implements RunicChatAPI, Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        RunicCommon.getLuckPermsAPI().retrieveData(event.getPlayer().getUniqueId()).then(data -> {
+        RunicCommon.getLuckPermsAPI().retrieveData(event.getPlayer().getUniqueId()).thenAccept(data -> {
             if (event.getPlayer().hasPermission("runicchat.spy")) {
                 spyChannels.put(event.getPlayer().getUniqueId(), new HashSet<>());
                 for (ChatChannel channel : getChatChannels()) {
