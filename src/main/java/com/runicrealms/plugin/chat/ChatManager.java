@@ -4,6 +4,7 @@ import com.runicrealms.plugin.chat.api.RunicChatAPI;
 import com.runicrealms.plugin.chat.api.chat.ChatChannel;
 import com.runicrealms.plugin.chat.api.event.ChatChannelMessageEvent;
 import com.runicrealms.plugin.chat.filter.ProfanityFilter;
+import com.runicrealms.plugin.common.RunicAPI;
 import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.common.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -224,10 +225,10 @@ public class ChatManager implements RunicChatAPI, Listener {
         if (!spyChannels.containsKey(player.getUniqueId())) spyChannels.put(player.getUniqueId(), new HashSet<>());
         if (enabled) {
             spyChannels.get(player.getUniqueId()).add(channel);
-            RunicCommon.getLuckPermsAPI().savePayload(RunicCommon.getLuckPermsAPI().createPayload(player.getUniqueId(), (data) -> data.set("runic.chat-spy." + channel.getName(), true)));
+            RunicAPI.getLuckPermsAPI().savePayload(RunicAPI.getLuckPermsAPI().createPayload(player.getUniqueId(), (data) -> data.set("runic.chat-spy." + channel.getName(), true)));
         } else {
             spyChannels.get(player.getUniqueId()).remove(channel);
-            RunicCommon.getLuckPermsAPI().savePayload(RunicCommon.getLuckPermsAPI().createPayload(player.getUniqueId(), (data) -> data.set("runic.chat-spy." + channel.getName(), false)));
+            RunicAPI.getLuckPermsAPI().savePayload(RunicAPI.getLuckPermsAPI().createPayload(player.getUniqueId(), (data) -> data.set("runic.chat-spy." + channel.getName(), false)));
         }
     }
 
@@ -244,7 +245,7 @@ public class ChatManager implements RunicChatAPI, Listener {
     @Override
     public void setChannelMuted(Player player, ChatChannel channel, boolean muted) {
         channelsEnabled.get(player.getUniqueId()).put(channel, !muted);
-        RunicCommon.getLuckPermsAPI().savePayload(RunicCommon.getLuckPermsAPI().createPayload(player.getUniqueId(), data -> {
+        RunicAPI.getLuckPermsAPI().savePayload(RunicAPI.getLuckPermsAPI().createPayload(player.getUniqueId(), data -> {
             data.set("runic.channel." + channel.getName(), !muted);
         }));
     }
@@ -329,7 +330,7 @@ public class ChatManager implements RunicChatAPI, Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        RunicCommon.getLuckPermsAPI().retrieveData(event.getPlayer().getUniqueId()).thenAccept(data -> {
+        RunicAPI.getLuckPermsAPI().retrieveData(event.getPlayer().getUniqueId()).thenAccept(data -> {
             if (event.getPlayer().hasPermission("runicchat.spy")) {
                 spyChannels.put(event.getPlayer().getUniqueId(), new HashSet<>());
                 for (ChatChannel channel : getChatChannels()) {
